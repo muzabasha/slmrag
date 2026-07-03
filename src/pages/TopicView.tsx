@@ -132,6 +132,7 @@ export default function TopicView() {
             </div>
           )}
         </div>
+        )}
 
         {/* Story Section - Only show if story content exists */}
         {topic.story && (
@@ -256,6 +257,7 @@ export default function TopicView() {
             </div>
           )}
         </div>
+        )}
 
         {/* Feedback Section */}
         <div className="card mt-6 animate-fade-up" style={{ animationDelay: '800ms' }}>
