@@ -37,6 +37,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
@@ -52,7 +53,28 @@ body {
   background: var(--color-surface-dark);
 }
 
-h1 { font-size: 2.5rem; font-weight: 700; line-height: 1.2; }
+/* ===== PROJECTOR MODE ===== */
+.projector-mode {
+  --color-text: #000000;
+  --color-text-dark: #ffffff;
+  --color-muted: #475569;
+  --color-border: #1e293b;
+}
+
+.projector-mode body {
+  font-size: 22px;
+  line-height: 1.8;
+}
+
+.projector-mode h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.02em; }
+.projector-mode h2 { font-size: 2.5rem; font-weight: 700; }
+.projector-mode h3 { font-size: 1.75rem; font-weight: 700; }
+.projector-mode h4 { font-size: 1.5rem; font-weight: 600; }
+.projector-mode p, .projector-mode li { font-size: 1.25rem; line-height: 1.8; }
+.projector-mode .katex { font-size: 1.4em !important; }
+
+/* ===== TYPOGRAPHY ===== */
+h1 { font-size: 2.5rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
 h2 { font-size: 2rem; font-weight: 600; line-height: 1.3; }
 h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.4; }
 h4 { font-size: 1.25rem; font-weight: 600; }
@@ -64,21 +86,146 @@ h4 { font-size: 1.25rem; font-weight: 600; }
   h3 { font-size: 1.25rem; }
 }
 
-/* Scrollbar */
+.projector-mode h1 { font-size: 3rem; }
+.projector-mode h2 { font-size: 2.5rem; }
+.projector-mode h3 { font-size: 1.75rem; }
+
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-/* KaTeX override */
+/* ===== KATEX OVERRIDES ===== */
 .katex { font-size: 1.15em !important; }
+.katex-display { margin: 1em 0 !important; overflow-x: auto; overflow-y: hidden; }
 
-/* Animation for slide-in */
+/* ===== MERMAID ===== */
+.mermaid svg { max-width: 100%; height: auto; }
+.dark .mermaid svg { filter: invert(0.9) hue-rotate(180deg); }
+
+/* ===== CUSTOM SLIDER STYLING ===== */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  outline: none;
+  cursor: pointer;
+}
+
+.dark input[type="range"] {
+  background: #334155;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+  border: none;
+}
+
+/* ===== FOCUS STYLES FOR ACCESSIBILITY ===== */
+*:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+  .sidebar, .sticky, header, nav, button {
+    display: none !important;
+  }
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-up {
   animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-pulse-slow {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+/* ===== TABLE STYLING ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ===== CARD HOVER ===== */
+.card-hover {
+  transition: all 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== CODE BLOCK ===== */
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9em;
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
+  background: #f1f5f9;
+}
+.dark code {
+  background: #1e293b;
+}
+
+pre {
+  overflow-x: auto;
+  padding: 1em;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.dark pre {
+  background: #0f172a;
+  border-color: #334155;
 }

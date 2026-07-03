@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import {
   ArrowRight, BookOpen, Brain, Code, Users, Target,
-  Calendar, Award, ExternalLink
+  Calendar, Award, ExternalLink, Sparkles
 } from 'lucide-react'
 import courseData from '../data/courseData'
 import { dailySchedule, miniProjects } from '../data/courseData'
+import ProgressTracker from '../components/ProgressTracker'
 
 export default function Home() {
   return (
@@ -19,7 +20,22 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-secondary p-8 md:p-12 mb-8"
       >
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+        
         <div className="relative z-10">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full text-white mb-4 backdrop-blur-sm"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span className="text-sm font-semibold">Interactive Learning Experience</span>
+          </motion.div>
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
             {courseData.title}
           </h1>
@@ -33,7 +49,7 @@ export default function Home() {
           <div className="flex flex-wrap gap-4">
             <Link
               to="/overview"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-colors text-lg"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 hover:scale-105 transition-all text-lg shadow-lg"
             >
               <BookOpen className="w-5 h-5" />
               Start Learning
@@ -43,7 +59,7 @@ export default function Home() {
               href="https://scholar-sparkle-web.lovable.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors text-lg border border-white/30"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 hover:scale-105 transition-all text-lg border border-white/30 backdrop-blur-sm"
             >
               <Users className="w-5 h-5" />
               Resource Person
@@ -52,6 +68,9 @@ export default function Home() {
           </div>
         </div>
       </motion.section>
+
+      {/* Progress Tracker */}
+      <ProgressTracker />
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -114,26 +133,33 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
             >
               <Link
                 to={`/module/${module.id}`}
-                className="block bg-card dark:bg-card-dark rounded-xl p-6 border border-border dark:border-border-dark hover:shadow-lg transition-all h-full"
+                className="block bg-card dark:bg-card-dark rounded-xl p-6 border-2 border-border dark:border-border-dark hover:border-primary hover:shadow-2xl transition-all h-full group"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <span className="text-primary font-bold">D{module.day}</span>
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <span className="text-white font-bold text-lg">D{module.day}</span>
                   </div>
-                  <span className="text-sm font-semibold text-primary">Day {module.day}</span>
+                  <div>
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wide">Day {module.day}</span>
+                    <div className="text-xs text-muted dark:text-muted-dark">{module.topics.length} topics</div>
+                  </div>
                 </div>
-                <h3 className="text-lg font-bold text-text dark:text-text-dark mb-2">{module.title}</h3>
+                <h3 className="text-lg font-bold text-text dark:text-text-dark mb-2 group-hover:text-primary transition-colors">{module.title}</h3>
                 <p className="text-sm text-muted dark:text-muted-dark mb-4">{module.subtitle}</p>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   {module.objectives.slice(0, 2).map((obj, j) => (
-                    <p key={j} className="text-xs text-muted dark:text-muted-dark flex items-start gap-1">
-                      <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                    <p key={j} className="text-xs text-muted dark:text-muted-dark flex items-start gap-2">
+                      <ArrowRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
                       {obj}
                     </p>
                   ))}
+                </div>
+                <div className="mt-4 pt-4 border-t border-border dark:border-border-dark">
+                  <span className="text-xs font-semibold text-secondary">{module.deliverable}</span>
                 </div>
               </Link>
             </motion.div>

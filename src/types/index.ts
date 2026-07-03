@@ -170,6 +170,11 @@ export interface InsightsSection {
   careerRelevance: string;
 }
 
+// Export type aliases for component usage
+export type Story = StorySection;
+export type MathModeling = MathModelingSection;
+export type VirtualLab = VirtualLabSection;
+
 export interface Module {
   id: string;
   day: number;
