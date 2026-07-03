@@ -89,10 +89,10 @@ export default function TopicView() {
         {/* Conditional Section Rendering - Only show sections with content */}
         
         {/* Prerequisites & Connections - Always show */}
-        {(topic.prerequisites?.length > 0 || topic.dependentTopics?.length > 0) && (
+        {((topic.prerequisites?.length ?? 0) > 0 || (topic.dependentTopics?.length ?? 0) > 0) &&
           <div className="card mb-4 overflow-hidden animate-fade-up">
             <SectionToggle section="prerequisites" title="Prerequisites & Topic Connections" icon={BookOpen} color="#3b82f6" />
-            {expandedSections.prerequisites && (
+            {expandedSections.prerequisites &&
             <div className="p-6 pt-0 space-y-4">
               <div>
                 <h4 className="font-semibold text-text dark:text-text-dark mb-2 flex items-center gap-2">
@@ -130,9 +130,9 @@ export default function TopicView() {
                 <p className="text-text dark:text-text-dark">{topic.nextTopicPrep}</p>
               </div>
             </div>
-          )}
-        </div>
-        )}
+            }
+          </div>
+        }
 
         {/* Story Section - Only show if story content exists */}
         {topic.story && (
@@ -195,10 +195,10 @@ export default function TopicView() {
         </div>
 
         {/* Insights Section - Only show if insights exist */}
-        {topic.insights && (
+        {topic.insights &&
           <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '700ms' }}>
             <SectionToggle section="insights" title="Key Insights & Career Relevance" icon={Lightbulb} color="#06b6d4" />
-            {expandedSections.insights && (
+            {expandedSections.insights &&
             <div className="p-6 pt-0 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -255,9 +255,9 @@ export default function TopicView() {
                 <p className="text-text dark:text-text-dark">{topic.insights.careerRelevance}</p>
               </div>
             </div>
-          )}
-        </div>
-        )}
+            }
+          </div>
+        }
 
         {/* Feedback Section */}
         <div className="card mt-6 animate-fade-up" style={{ animationDelay: '800ms' }}>
