@@ -66,7 +66,7 @@ export default function TopicView() {
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {/* Navigation */}
-        <div className="flex items-center gap-4 mb-6">
+        <nav className="flex items-center gap-4 mb-6" aria-label="Breadcrumb">
           <Link
             to={`/module/${module.id}`}
             className="flex items-center gap-2 text-primary hover:text-primary-dark transition-colors"
@@ -74,22 +74,25 @@ export default function TopicView() {
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Day {module.day}</span>
           </Link>
-        </div>
+        </nav>
 
         {/* Topic Header */}
-        <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="px-3 py-1 bg-white/20 text-white text-sm rounded-full">Day {module.day}</span>
-            <span className="px-3 py-1 bg-white/20 text-white text-sm rounded-full">{topic.duration}</span>
+        <header className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 mb-6 shadow-lg">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <span className="badge badge-primary bg-white/20 text-white">Day {module.day}</span>
+            <span className="badge badge-primary bg-white/20 text-white">{topic.duration}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">{topic.title}</h1>
-          <p className="text-lg text-white/90">{topic.description}</p>
-        </div>
+          <p className="text-lg text-white/90 lead">{topic.description}</p>
+        </header>
 
-        {/* ===== SECTION 1: PREREQUISITES & CONNECTIONS ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="prerequisites" title="Prerequisites & Topic Connections" icon={BookOpen} color="#3b82f6" />
-          {expandedSections.prerequisites && (
+        {/* Conditional Section Rendering - Only show sections with content */}
+        
+        {/* Prerequisites & Connections - Always show */}
+        {(topic.prerequisites?.length > 0 || topic.dependentTopics?.length > 0) && (
+          <div className="card mb-4 overflow-hidden animate-fade-up">
+            <SectionToggle section="prerequisites" title="Prerequisites & Topic Connections" icon={BookOpen} color="#3b82f6" />
+            {expandedSections.prerequisites && (
             <div className="p-6 pt-0 space-y-4">
               <div>
                 <h4 className="font-semibold text-text dark:text-text-dark mb-2 flex items-center gap-2">
@@ -130,46 +133,58 @@ export default function TopicView() {
           )}
         </div>
 
-        {/* ===== SECTION 2: STORY TELLING ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="story" title="Story Time: Learn Through Stories" icon={BookMarked} color="#8b5cf6" />
-          {expandedSections.story && (
-            <div className="p-6 pt-0">
-              <InteractiveStoryCard story={topic.story} />
-            </div>
-          )}
-        </div>
+        {/* Story Section - Only show if story content exists */}
+        {topic.story && (
+          <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '100ms' }}>
+            <SectionToggle section="story" title="Story Time: Learn Through Stories" icon={BookMarked} color="#8b5cf6" />
+            {expandedSections.story && (
+              <div className="p-6 pt-0">
+                <InteractiveStoryCard story={topic.story} />
+              </div>
+            )}
+          </div>
+        )}
 
-        {/* ===== SECTION 3: MATHEMATICAL MODELLING ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="math" title="Mathematical Modelling" icon={BarChart3} color="#ef4444" />
-          {expandedSections.math && (
-            <div className="p-6 pt-0">
-              <InteractiveMathSection mathModeling={topic.mathModeling} />
-            </div>
-          )}
-        </div>
+        {/* Math Section - Only show if equations exist */}
+        {topic.mathModeling && topic.mathModeling.equations && topic.mathModeling.equations.length > 0 && (
+          <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '200ms' }}>
+            <SectionToggle section="math" title="Mathematical Modelling" icon={BarChart3} color="#ef4444" />
+            {expandedSections.math && (
+              <div className="p-6 pt-0">
+                <InteractiveMathSection mathModeling={topic.mathModeling} />
+              </div>
+            )}
+          </div>
+        )}
 
-        {/* ===== SECTION 4: ACTIVITY BASED LEARNING ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="activities" title="Activity Based Learning" icon={FlaskConical} color="#10b981" />
-          {expandedSections.activities && <ActivitySection activities={topic.activities} />}
-        </div>
+        {/* Activities Section - Only show if activities exist */}
+        {topic.activities && topic.activities.levels && topic.activities.levels.length > 0 && (
+          <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '300ms' }}>
+            <SectionToggle section="activities" title="Activity Based Learning" icon={FlaskConical} color="#10b981" />
+            {expandedSections.activities && <ActivitySection activities={topic.activities} />}
+          </div>
+        )}
 
-        {/* ===== SECTION 5: PROJECT BASED LEARNING ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="project" title="Project Based Learning" icon={Target} color="#7c3aed" />
-          {expandedSections.project && <ProjectSection project={topic.project} />}
-        </div>
+        {/* Project Section - Only show if project exists */}
+        {topic.project && topic.project.scope && (
+          <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '400ms' }}>
+            <SectionToggle section="project" title="Project Based Learning" icon={Target} color="#7c3aed" />
+            {expandedSections.project && <ProjectSection project={topic.project} />}
+          </div>
+        )}
 
-        {/* ===== SECTION 6: QUESTIONS ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="questions" title="Model 2 Mark Questions" icon={BookMarked} color="#06b6d4" />
-          {expandedSections.questions && <QuestionSection questions={topic.questions} />}
-        </div>
+        {/* Questions Section - Only show if questions exist */}
+        {topic.questions && (Object.keys(topic.questions).some(key => 
+          topic.questions[key as keyof typeof topic.questions]?.length > 0
+        )) && (
+          <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '500ms' }}>
+            <SectionToggle section="questions" title="Model 2 Mark Questions" icon={BookMarked} color="#06b6d4" />
+            {expandedSections.questions && <QuestionSection questions={topic.questions} />}
+          </div>
+        )}
 
-        {/* ===== SECTION 7: VIRTUAL LAB ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
+        {/* Virtual Lab - Always show for hands-on practice */}
+        <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '600ms' }}>
           <SectionToggle section="virtualLab" title="Learn by Doing: Virtual Lab" icon={Beaker} color="#f59e0b" />
           {expandedSections.virtualLab && (
             <div className="p-6 pt-0">
@@ -178,10 +193,11 @@ export default function TopicView() {
           )}
         </div>
 
-        {/* ===== SECTION 8: INSIGHTS ===== */}
-        <div className="bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark mb-4 overflow-hidden">
-          <SectionToggle section="insights" title="Key Insights & Career Relevance" icon={Lightbulb} color="#06b6d4" />
-          {expandedSections.insights && (
+        {/* Insights Section - Only show if insights exist */}
+        {topic.insights && (
+          <div className="card mb-4 overflow-hidden animate-fade-up" style={{ animationDelay: '700ms' }}>
+            <SectionToggle section="insights" title="Key Insights & Career Relevance" icon={Lightbulb} color="#06b6d4" />
+            {expandedSections.insights && (
             <div className="p-6 pt-0 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -242,18 +258,22 @@ export default function TopicView() {
         </div>
 
         {/* Feedback Section */}
-        <div className="bg-card dark:bg-card-dark rounded-xl p-6 border border-border dark:border-border-dark mt-6">
+        <div className="card mt-6 animate-fade-up" style={{ animationDelay: '800ms' }}>
           <h3 className="text-xl font-bold text-text dark:text-text-dark mb-4 flex items-center gap-2">
             <MessageSquare className="w-5 h-5 text-primary" />
             Human-in-the-Loop Feedback
           </h3>
+          <p className="text-muted dark:text-muted-dark mb-4 small-text">
+            Your feedback helps us improve this learning experience. Share your thoughts, questions, or suggestions below.
+          </p>
           <textarea
-            className="w-full p-4 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-gray-800 text-text dark:text-text-dark resize-none"
+            className="w-full p-4 rounded-lg border-2 border-border dark:border-border-dark bg-white dark:bg-gray-800 text-text dark:text-text-dark resize-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
             rows={4}
             placeholder="Share your feedback, questions, or suggestions for improving this topic..."
+            aria-label="Feedback textarea"
           />
           <div className="flex justify-end mt-3">
-            <button className="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors">
+            <button className="btn btn-primary">
               Submit Feedback
             </button>
           </div>
