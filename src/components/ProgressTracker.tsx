@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircle, Circle, Trophy } from 'lucide-react'
+import courseData from '../data/courseData'
 
 interface ProgressData {
   [key: string]: {
@@ -18,7 +19,7 @@ const milestones = [
 ]
 
 export default function ProgressTracker() {
-  const [totalTopics, setTotalTopics] = useState(0)
+  const totalCourseTopics = courseData.modules.reduce((sum, m) => sum + m.topics.length, 0)
   const [completedTopics, setCompletedTopics] = useState(0)
 
   useEffect(() => {
@@ -27,23 +28,32 @@ export default function ProgressTracker() {
       try {
         const data: ProgressData = JSON.parse(saved)
         const completed = Object.values(data).filter(item => item.completed).length
-        const total = Object.keys(data).length
         setCompletedTopics(completed)
-        setTotalTopics(total)
       } catch {
         // ignore malformed data
       }
     }
+
+    const onStorage = () => {
+      try {
+        const saved = localStorage.getItem('courseProgress')
+        if (saved) {
+          const data: ProgressData = JSON.parse(saved)
+          setCompletedTopics(Object.values(data).filter(item => item.completed).length)
+        }
+      } catch { /* ignore */ }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
   }, [])
 
-  // Safe division — avoids NaN when no progress data is loaded yet
-  const progressPercentage = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0
+  const progressPercentage = totalCourseTopics > 0 ? (completedTopics / totalCourseTopics) * 100 : 0
 
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl p-5 border border-primary/20 bg-gradient-to-br from-primary/8 via-secondary/5 to-transparent dark:from-primary/15 dark:via-secondary/10"
+      className="rounded-2xl p-5 border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-secondary/[0.05] to-transparent dark:from-primary/[0.15] dark:via-secondary/[0.10]"
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -57,7 +67,7 @@ export default function ProgressTracker() {
         </div>
         <div className="text-right">
           <div className="text-2xl font-bold text-primary">{Math.round(progressPercentage)}%</div>
-          <p className="text-muted dark:text-muted-dark text-xs">{completedTopics} of {totalTopics} topics</p>
+          <p className="text-muted dark:text-muted-dark text-xs">{completedTopics} of {totalCourseTopics} topics</p>
         </div>
       </div>
 

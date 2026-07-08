@@ -16,6 +16,9 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
       <Header toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
       <div className="flex relative">
@@ -63,7 +66,7 @@ export default function MainLayout() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <div className="flex-1 min-h-[calc(100vh-4rem)] lg:ml-72 min-w-0">
+        <div id="main-content" className="flex-1 min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] lg:ml-72 min-w-0">
           <motion.main
             key={location.pathname}
             initial={{ opacity: 0, y: 12 }}

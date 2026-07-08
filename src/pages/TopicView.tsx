@@ -296,6 +296,8 @@ export default function TopicView() {
                 onClick={() => scrollToSection(key)}
                 className="block w-full text-left text-xs text-gray-500 dark:text-gray-400 hover:text-primary transition-colors py-1"
                 style={{ borderLeft: `2px solid transparent`, paddingLeft: '8px' }}
+                onFocus={(e) => e.currentTarget.style.borderLeftColor = color}
+                onBlur={(e) => e.currentTarget.style.borderLeftColor = 'transparent'}
                 onMouseEnter={(e) => e.currentTarget.style.borderLeftColor = color}
                 onMouseLeave={(e) => e.currentTarget.style.borderLeftColor = 'transparent'}
               >

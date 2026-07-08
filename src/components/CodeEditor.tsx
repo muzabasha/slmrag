@@ -127,6 +127,7 @@ export default function CodeEditor({ initialCode, language, expectedOutput, hint
         rows={12}
         spellCheck={false}
         style={{ tabSize: 2 }}
+        aria-label="Code editor"
       />
 
       {/* Output Panel */}

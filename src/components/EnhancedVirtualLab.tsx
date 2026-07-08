@@ -585,7 +585,7 @@ export default function EnhancedVirtualLab({ title, description, topic }: Props)
           key={currentStep.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-primary/30"
+          className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-primary/30 dark:border-primary/50"
         >
           <div className="flex items-start justify-between mb-4">
             <div>

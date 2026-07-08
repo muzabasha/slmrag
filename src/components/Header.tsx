@@ -82,7 +82,7 @@ export default function Header({ toggleSidebar, sidebarOpen }: HeaderProps) {
 
             {/* Center: Breadcrumb */}
             {!isHome && (
-              <div className="hidden sm:flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400 min-w-0 max-w-[40%] lg:max-w-none">
+              <div className="hidden sm:flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400 min-w-0 max-w-[55%] lg:max-w-none">
                 <Link to="/" className="hover:text-primary transition-colors whitespace-nowrap flex-shrink-0">Home</Link>
                 {location.pathname.split('/').filter(Boolean).map((segment, i, arr) => (
                   <span key={segment} className="flex items-center gap-1.5 min-w-0">
@@ -133,7 +133,7 @@ export default function Header({ toggleSidebar, sidebarOpen }: HeaderProps) {
 
       {/* Search Modal */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[15vh] px-4">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[15vh] px-4" role="dialog" aria-modal="true" aria-label="Search workshop content">
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSearchOpen(false)} />
           <div className="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-fade-down">
             <div className="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
@@ -172,7 +172,7 @@ export default function Header({ toggleSidebar, sidebarOpen }: HeaderProps) {
                         setSearchOpen(false)
                         setSearchQuery('')
                       }}
-                      className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left group"
+                      className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-colors text-left group"
                     >
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 dark:text-white truncate">

@@ -61,14 +61,14 @@ export default function DependencyGraph() {
                 </span>
 
                 {/* From node */}
-                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[i % palette.length]} whitespace-nowrap overflow-hidden text-ellipsis max-w-[35vw] sm:max-w-none`}>
+                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[i % palette.length]} min-w-0 max-w-[45vw] sm:max-w-none truncate`}>
                   {dep.from}
                 </div>
 
                 <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted flex-shrink-0" />
 
                 {/* To node */}
-                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[(i + 1) % palette.length]} whitespace-nowrap overflow-hidden text-ellipsis max-w-[35vw] sm:max-w-none`}>
+                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[(i + 1) % palette.length]} min-w-0 max-w-[45vw] sm:max-w-none truncate`}>
                   {dep.to}
                 </div>
               </motion.div>
