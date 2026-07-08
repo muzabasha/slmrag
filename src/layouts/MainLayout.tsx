@@ -85,7 +85,7 @@ export default function MainLayout() {
                   stiffness: 300,
                   damping: 30 
                 }}
-                className="fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-80 bg-card dark:bg-card-dark border-r border-border dark:border-border-dark shadow-2xl overflow-hidden"
+                className="fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-80 bg-card/80 dark:bg-card-dark/80 glass border-r border-border/50 dark:border-border-dark/50 shadow-2xl overflow-hidden"
                 role="complementary"
                 aria-label="Sidebar navigation"
               >

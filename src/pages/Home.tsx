@@ -18,7 +18,7 @@ export default function Home() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-secondary p-8 md:p-12 mb-8"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-dark to-secondary p-8 md:p-14 mb-8 shadow-2xl border border-white/10"
       >
         {/* Animated Background Elements */}
         <div className="absolute inset-0 opacity-10">
@@ -87,7 +87,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-card dark:bg-card-dark rounded-xl p-4 border border-border dark:border-border-dark text-center"
+              className="bg-card/80 dark:bg-card-dark/80 glass rounded-2xl p-4 border border-border/50 dark:border-border-dark/50 text-center hover-lift"
             >
               <Icon className="w-8 h-8 text-primary mx-auto mb-2" />
               <div className="text-2xl font-bold text-text dark:text-text-dark">{stat.value}</div>
@@ -134,10 +134,11 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              className="h-full"
             >
               <Link
                 to={`/module/${module.id}`}
-                className="block bg-card dark:bg-card-dark rounded-xl p-6 border-2 border-border dark:border-border-dark hover:border-primary hover:shadow-2xl transition-all h-full group"
+                className="block bg-card/90 dark:bg-card-dark/90 glass rounded-2xl p-6 border border-border/50 dark:border-border-dark/50 hover:border-primary/50 hover:shadow-2xl hover:bg-card dark:hover:bg-card-dark transition-all h-full group relative overflow-hidden"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform">

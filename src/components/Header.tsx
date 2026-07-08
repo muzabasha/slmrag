@@ -9,7 +9,7 @@ interface HeaderProps {
 
 export default function Header({ toggleSidebar, darkMode, toggleDarkMode }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 h-16 bg-card dark:bg-card-dark border-b border-border dark:border-border-dark shadow-sm">
+    <header className="sticky top-0 z-50 h-16 bg-card/80 dark:bg-card-dark/80 glass border-b border-border/50 dark:border-border-dark/50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
