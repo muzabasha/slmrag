@@ -6,7 +6,20 @@ import Header from '../components/Header'
 
 export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try { return localStorage.getItem('sidebarCollapsed') === 'true' } catch { return false }
+  })
   const location = useLocation()
+
+  useEffect(() => {
+    try { localStorage.setItem('sidebarCollapsed', String(sidebarCollapsed)) } catch { /* ignore */ }
+  }, [sidebarCollapsed])
+
+  useEffect(() => {
+    const onToggle = () => setSidebarCollapsed(prev => !prev)
+    window.addEventListener('toggleSidebarCollapse', onToggle)
+    return () => window.removeEventListener('toggleSidebarCollapse', onToggle)
+  }, [])
 
   useEffect(() => {
     setSidebarOpen(false)
@@ -22,14 +35,16 @@ export default function MainLayout() {
       <Header toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
       <div className="flex relative">
-        {/* Desktop Sidebar (always visible on lg+) */}
+        {/* Desktop Sidebar (collapsible on lg+) */}
         <aside
-          className="hidden lg:flex lg:flex-col lg:w-72 lg:fixed lg:inset-y-0 lg:z-30 lg:pt-20 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950"
+          className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:z-30 lg:pt-20 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 transition-all duration-300 ${
+            sidebarCollapsed ? 'lg:w-16' : 'lg:w-72'
+          }`}
           role="complementary"
           aria-label="Sidebar navigation"
         >
           <div className="flex-1 overflow-y-auto">
-            <Sidebar onClose={() => setSidebarOpen(false)} />
+            <Sidebar onClose={() => setSidebarOpen(false)} collapsed={sidebarCollapsed} />
           </div>
         </aside>
 
@@ -58,7 +73,7 @@ export default function MainLayout() {
                 aria-label="Sidebar navigation"
               >
                 <div className="h-full overflow-y-auto bg-white dark:bg-gray-950">
-                  <Sidebar onClose={() => setSidebarOpen(false)} />
+                  <Sidebar onClose={() => setSidebarOpen(false)} collapsed={false} />
                 </div>
               </motion.aside>
             </>
@@ -66,7 +81,9 @@ export default function MainLayout() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <div id="main-content" className="flex-1 min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] lg:ml-72 min-w-0">
+        <div id="main-content" className={`flex-1 min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] min-w-0 transition-all duration-300 ${
+          sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-72'
+        }`}>
           <motion.main
             key={location.pathname}
             initial={{ opacity: 0, y: 12 }}
