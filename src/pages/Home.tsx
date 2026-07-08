@@ -194,7 +194,7 @@ export default function Home() {
                 key={i}
                 className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
               >
-                <div className="w-24 flex-shrink-0">
+                <div className="w-20 sm:w-24 flex-shrink-0">
                   <span className="text-sm font-semibold text-primary">{sched.time}</span>
                 </div>
                 <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 flex-shrink-0" />

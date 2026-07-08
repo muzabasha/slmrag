@@ -147,9 +147,9 @@ export default function TopicView() {
     <>
       <Helmet><title>{topic.title} - SLM & RAG Workshop</title></Helmet>
 
-      <div className="lg:grid lg:grid-cols-[1fr_220px] lg:gap-8">
+        <div className="lg:grid lg:grid-cols-[1fr_220px] lg:gap-8 w-full max-w-full">
         {/* Main Content */}
-        <div>
+        <div className="min-w-0">
           {/* Navigation */}
           <nav className="flex items-center gap-3 mb-6 text-sm" aria-label="Breadcrumb">
             <Link to="/" className="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Home</Link>

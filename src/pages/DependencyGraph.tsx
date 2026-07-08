@@ -53,7 +53,7 @@ export default function DependencyGraph() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-3 flex-wrap"
+                className="flex items-center gap-2 sm:gap-3"
               >
                 {/* Step number */}
                 <span className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold text-muted dark:text-muted-dark flex items-center justify-center flex-shrink-0">
@@ -61,14 +61,14 @@ export default function DependencyGraph() {
                 </span>
 
                 {/* From node */}
-                <div className={`px-4 py-2 rounded-xl text-white text-sm font-semibold shadow-sm ${palette[i % palette.length]}`}>
+                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[i % palette.length]} whitespace-nowrap overflow-hidden text-ellipsis max-w-[35vw] sm:max-w-none`}>
                   {dep.from}
                 </div>
 
-                <ArrowRight className="w-4 h-4 text-muted flex-shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted flex-shrink-0" />
 
                 {/* To node */}
-                <div className={`px-4 py-2 rounded-xl text-white text-sm font-semibold shadow-sm ${palette[(i + 1) % palette.length]}`}>
+                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[(i + 1) % palette.length]} whitespace-nowrap overflow-hidden text-ellipsis max-w-[35vw] sm:max-w-none`}>
                   {dep.to}
                 </div>
               </motion.div>

@@ -60,14 +60,14 @@ export default function Header({ toggleSidebar, sidebarOpen }: HeaderProps) {
               </Link>
             </div>
 
-            {/* Center: Breadcrumb (desktop, not on home) */}
-            {!isHome && scrolled && (
-              <div className="hidden md:flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+            {/* Center: Breadcrumb */}
+            {!isHome && (
+              <div className="hidden sm:flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400 min-w-0 max-w-[40%] lg:max-w-none">
+                <Link to="/" className="hover:text-primary transition-colors whitespace-nowrap flex-shrink-0">Home</Link>
                 {location.pathname.split('/').filter(Boolean).map((segment, i, arr) => (
-                  <span key={segment} className="flex items-center gap-2">
-                    <span className="text-gray-300 dark:text-gray-600">/</span>
-                    <span className={i === arr.length - 1 ? 'text-gray-900 dark:text-white font-medium capitalize' : 'capitalize'}>
+                  <span key={segment} className="flex items-center gap-1.5 min-w-0">
+                    <span className="text-gray-300 dark:text-gray-600 flex-shrink-0">/</span>
+                    <span className={`truncate ${i === arr.length - 1 ? 'text-gray-900 dark:text-white font-medium' : 'capitalize'}`}>
                       {segment.replace(/-/g, ' ')}
                     </span>
                   </span>

@@ -15,7 +15,7 @@ export default function MainLayout() {
   const toggleSidebar = () => setSidebarOpen(prev => !prev)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
       <Header toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
       <div className="flex relative">
