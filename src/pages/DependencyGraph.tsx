@@ -1,26 +1,45 @@
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
-import { GitBranch, ArrowRight } from 'lucide-react'
+import { GitBranch } from 'lucide-react'
+import MermaidDiagram from '../components/MermaidDiagram'
 
-const dependencies = [
-  { from: 'AI Evolution', to: 'LLM vs SLM' },
-  { from: 'LLM vs SLM', to: 'Tokenization' },
-  { from: 'Tokenization', to: 'Embeddings' },
-  { from: 'Embeddings', to: 'Positional Encoding' },
-  { from: 'Positional Encoding', to: 'Transformer Architecture' },
-  { from: 'Transformer Architecture', to: 'Self-Attention' },
-  { from: 'Self-Attention', to: 'Text Generation Pipeline' },
-  { from: 'Text Generation Pipeline', to: 'Prompt Engineering' },
-  { from: 'Prompt Engineering', to: 'Fine-tuning (LoRA)' },
-  { from: 'Fine-tuning (LoRA)', to: 'RAG Systems' },
-  { from: 'RAG Systems', to: 'Advanced RAG' },
-  { from: 'Advanced RAG', to: 'Deployment' },
-]
+const flowChart = `graph TD
+    FE[AI Evolution] --> LS[LLM vs SLM]
+    LS --> TK[Tokenization]
+    TK --> EM[Embeddings]
+    EM --> PE[Positional Encoding]
+    PE --> TA[Transformer Architecture]
+    TA --> SA[Self-Attention]
+    SA --> TG[Text Generation Pipeline]
+    TG --> PE2[Prompt Engineering]
+    PE2 --> FT[Fine-tuning LoRA]
+    FT --> RS[RAG Systems]
+    RS --> AR[Advanced RAG]
+    AR --> DP[Deployment]
 
-const palette = [
-  'bg-indigo-500', 'bg-purple-500', 'bg-violet-500', 'bg-blue-500',
-  'bg-cyan-500', 'bg-teal-500', 'bg-emerald-500', 'bg-green-500',
-  'bg-yellow-500', 'bg-orange-500', 'bg-rose-500', 'bg-pink-500', 'bg-fuchsia-500',
+    style FE fill:#6366f1,color:#fff
+    style LS fill:#a855f7,color:#fff
+    style TK fill:#7c3aed,color:#fff
+    style EM fill:#3b82f6,color:#fff
+    style PE fill:#06b6d4,color:#fff
+    style TA fill:#14b8a6,color:#fff
+    style SA fill:#10b981,color:#fff
+    style TG fill:#22c55e,color:#fff
+    style PE2 fill:#eab308,color:#fff
+    style FT fill:#f59e0b,color:#fff
+    style RS fill:#f97316,color:#fff
+    style AR fill:#ef4444,color:#fff
+    style DP fill:#ec4899,color:#fff`
+
+const stages = [
+  { label: 'Foundations', color: 'bg-indigo-500' },
+  { label: 'Language Models', color: 'bg-purple-500' },
+  { label: 'Architecture', color: 'bg-blue-500' },
+  { label: 'Attention', color: 'bg-emerald-500' },
+  { label: 'Prompting', color: 'bg-yellow-500' },
+  { label: 'Fine-tuning', color: 'bg-orange-500' },
+  { label: 'RAG', color: 'bg-red-500' },
+  { label: 'Deployment', color: 'bg-pink-500' },
 ]
 
 export default function DependencyGraph() {
@@ -45,44 +64,16 @@ export default function DependencyGraph() {
             before moving to dependent topics.
           </p>
 
-          {/* Flow Chain */}
-          <div className="space-y-3">
-            {dependencies.map((dep, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-2 sm:gap-3"
-              >
-                {/* Step number */}
-                <span className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold text-muted dark:text-muted-dark flex items-center justify-center flex-shrink-0">
-                  {i + 1}
-                </span>
-
-                {/* From node */}
-                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[i % palette.length]} min-w-0 max-w-[45vw] sm:max-w-none truncate`}>
-                  {dep.from}
-                </div>
-
-                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted flex-shrink-0" />
-
-                {/* To node */}
-                <div className={`px-3 sm:px-4 py-2 rounded-xl text-white text-xs sm:text-sm font-semibold shadow-sm ${palette[(i + 1) % palette.length]} min-w-0 max-w-[45vw] sm:max-w-none truncate`}>
-                  {dep.to}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <MermaidDiagram chart={flowChart} />
 
           {/* Legend */}
-          <div className="mt-8 pt-6 border-t border-border dark:border-border-dark">
+          <div className="pt-6 border-t border-border dark:border-border-dark">
             <p className="text-xs text-muted dark:text-muted-dark font-semibold uppercase tracking-wider mb-3">
-              Learning Path
+              Learning Path Stages
             </p>
             <div className="flex flex-wrap gap-2">
-              {['Foundations', 'Language Models', 'Architecture', 'Attention', 'Prompting', 'Fine-tuning', 'RAG', 'Deployment'].map((label, i) => (
-                <span key={label} className={`px-3 py-1 rounded-full text-white text-xs font-medium ${palette[(i * 2) % palette.length]}`}>
+              {stages.map(({ label, color }) => (
+                <span key={label} className={`px-3 py-1 rounded-full text-white text-xs font-medium ${color}`}>
                   {label}
                 </span>
               ))}

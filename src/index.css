@@ -438,7 +438,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .dark .mermaid svg {
-  filter: invert(0.9) hue-rotate(180deg);
+  background: transparent;
 }
 
 /* ===== RESPONSIVE IMAGES ===== */
