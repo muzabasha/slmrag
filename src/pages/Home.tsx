@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import {
   ArrowRight, Clock, BookOpen, Code2, Layers, Trophy,
@@ -17,7 +18,12 @@ export default function Home() {
   const totalTopics = courseData.modules.reduce((sum, m) => sum + m.topics.length, 0)
 
   return (
-    <div className="space-y-16 lg:space-y-24 pb-16">
+    <>
+      <Helmet>
+        <title>{courseData.title} - SLM & RAG Workshop</title>
+        <meta name="description" content={courseData.subtitle} />
+      </Helmet>
+      <div className="space-y-16 lg:space-y-24 pb-16">
       {/* ===== HERO SECTION ===== */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black p-8 lg:p-12 xl:p-16">
         <div className="absolute inset-0 opacity-20">
@@ -272,5 +278,6 @@ export default function Home() {
         </div>
       </motion.div>
     </div>
+    </>
   )
 }
