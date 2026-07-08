@@ -10,99 +10,86 @@ interface ProgressData {
   }
 }
 
+const milestones = [
+  { label: 'Getting Started', threshold: 25 },
+  { label: 'Halfway There', threshold: 50 },
+  { label: 'Almost Done', threshold: 75 },
+  { label: 'Complete!', threshold: 100, isTrophy: true },
+]
+
 export default function ProgressTracker() {
   const [totalTopics, setTotalTopics] = useState(0)
   const [completedTopics, setCompletedTopics] = useState(0)
 
   useEffect(() => {
-    // Load progress from localStorage
     const saved = localStorage.getItem('courseProgress')
     if (saved) {
-      const data = JSON.parse(saved)
-      calculateProgress(data)
+      try {
+        const data: ProgressData = JSON.parse(saved)
+        const completed = Object.values(data).filter(item => item.completed).length
+        const total = Object.keys(data).length
+        setCompletedTopics(completed)
+        setTotalTopics(total)
+      } catch {
+        // ignore malformed data
+      }
     }
   }, [])
 
-  const calculateProgress = (data: ProgressData) => {
-    const completed = Object.values(data).filter(item => item.completed).length
-    setCompletedTopics(completed)
-    setTotalTopics(Object.keys(data).length || 1)
-  }
-
-  const progressPercentage = (completedTopics / totalTopics) * 100
+  // Safe division — avoids NaN when no progress data is loaded yet
+  const progressPercentage = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0
 
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-primary to-secondary rounded-xl p-6 text-white mb-6"
+      className="rounded-2xl p-5 mb-8 border border-primary/20 bg-gradient-to-br from-primary/8 via-secondary/5 to-transparent dark:from-primary/15 dark:via-secondary/10"
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <Trophy className="w-8 h-8" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg flex-shrink-0">
+            <Trophy className="w-5 h-5 text-white" />
+          </div>
           <div>
-            <h3 className="font-bold text-xl">Your Progress</h3>
-            <p className="text-white/80 text-sm">Keep up the great work!</p>
+            <h3 className="font-bold text-base text-text dark:text-text-dark leading-tight">Your Progress</h3>
+            <p className="text-muted dark:text-muted-dark text-xs">Keep up the great work!</p>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-3xl font-bold">{Math.round(progressPercentage)}%</div>
-          <p className="text-white/80 text-sm">{completedTopics} of {totalTopics} topics</p>
+          <div className="text-2xl font-bold text-primary">{Math.round(progressPercentage)}%</div>
+          <p className="text-muted dark:text-muted-dark text-xs">{completedTopics} of {totalTopics} topics</p>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="relative h-4 bg-white/20 rounded-full overflow-hidden">
+      <div className="relative h-2.5 bg-border dark:bg-border-dark rounded-full overflow-hidden mb-4">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${progressPercentage}%` }}
           transition={{ duration: 1, ease: 'easeOut' }}
-          className="absolute top-0 left-0 h-full bg-white rounded-full"
+          className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary to-secondary rounded-full"
         />
       </div>
 
       {/* Milestones */}
-      <div className="flex items-center justify-between mt-4 text-sm">
-        <div className="flex items-center gap-2">
-          {progressPercentage >= 25 ? (
-            <CheckCircle className="w-5 h-5 text-green-300" />
-          ) : (
-            <Circle className="w-5 h-5 text-white/40" />
-          )}
-          <span className={progressPercentage >= 25 ? 'font-semibold' : 'text-white/60'}>
-            Getting Started
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          {progressPercentage >= 50 ? (
-            <CheckCircle className="w-5 h-5 text-green-300" />
-          ) : (
-            <Circle className="w-5 h-5 text-white/40" />
-          )}
-          <span className={progressPercentage >= 50 ? 'font-semibold' : 'text-white/60'}>
-            Halfway There
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          {progressPercentage >= 75 ? (
-            <CheckCircle className="w-5 h-5 text-green-300" />
-          ) : (
-            <Circle className="w-5 h-5 text-white/40" />
-          )}
-          <span className={progressPercentage >= 75 ? 'font-semibold' : 'text-white/60'}>
-            Almost Done
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          {progressPercentage >= 100 ? (
-            <Trophy className="w-5 h-5 text-yellow-300" />
-          ) : (
-            <Trophy className="w-5 h-5 text-white/40" />
-          )}
-          <span className={progressPercentage >= 100 ? 'font-semibold' : 'text-white/60'}>
-            Complete!
-          </span>
-        </div>
+      <div className="flex items-center justify-between flex-wrap gap-x-3 gap-y-1">
+        {milestones.map(({ label, threshold, isTrophy }) => {
+          const achieved = progressPercentage >= threshold
+          return (
+            <div key={label} className="flex items-center gap-1.5 text-xs">
+              {isTrophy ? (
+                <Trophy className={`w-3.5 h-3.5 flex-shrink-0 ${achieved ? 'text-yellow-500' : 'text-muted dark:text-muted-dark'}`} />
+              ) : achieved ? (
+                <CheckCircle className="w-3.5 h-3.5 flex-shrink-0 text-success" />
+              ) : (
+                <Circle className="w-3.5 h-3.5 flex-shrink-0 text-muted dark:text-muted-dark" />
+              )}
+              <span className={achieved ? 'font-semibold text-text dark:text-text-dark' : 'text-muted dark:text-muted-dark'}>
+                {label}
+              </span>
+            </div>
+          )
+        })}
       </div>
     </motion.div>
   )

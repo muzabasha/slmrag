@@ -45,7 +45,7 @@ export default function MainLayout() {
   }
 
   return (
-    <div className={`min-h-screen bg-surface dark:bg-surface-dark ${darkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen bg-surface dark:bg-surface-dark flex flex-col ${darkMode ? 'dark' : ''}`}>
       {/* Skip to content link for accessibility */}
       <a href="#main-content" className="skip-to-content">
         Skip to main content
@@ -59,18 +59,19 @@ export default function MainLayout() {
       />
 
       {/* Layout Container */}
-      <div className="flex relative">
-        {/* Sidebar */}
-        <AnimatePresence mode="wait">
+      <div className="flex flex-1 relative min-h-0">
+
+        {/* Sidebar — always an overlay, never pushes content */}
+        <AnimatePresence>
           {sidebarOpen && (
             <>
-              {/* Mobile Overlay */}
+              {/* Mobile/Desktop Overlay backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+                className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
                 onClick={() => setSidebarOpen(false)}
                 aria-hidden="true"
               />
@@ -80,12 +81,12 @@ export default function MainLayout() {
                 initial={{ x: -320, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -320, opacity: 0 }}
-                transition={{ 
+                transition={{
                   type: 'spring',
-                  stiffness: 300,
-                  damping: 30 
+                  stiffness: 320,
+                  damping: 32,
                 }}
-                className="fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-80 bg-card/80 dark:bg-card-dark/80 glass border-r border-border/50 dark:border-border-dark/50 shadow-2xl overflow-hidden"
+                className="fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-72 bg-card/90 dark:bg-card-dark/90 glass border-r border-border/50 dark:border-border-dark/50 shadow-2xl overflow-hidden"
                 role="complementary"
                 aria-label="Sidebar navigation"
               >
@@ -97,68 +98,49 @@ export default function MainLayout() {
           )}
         </AnimatePresence>
 
-        {/* Main Content */}
-        <motion.main
+        {/* Main Content — never shifts, always full width under the overlay */}
+        <main
           id="main-content"
-          className="flex-1 min-h-[calc(100vh-4rem)]"
-          initial={false}
-          animate={{
-            marginLeft: sidebarOpen ? '20rem' : '0',
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 300,
-            damping: 30
-          }}
+          className="flex-1 min-h-0 overflow-y-auto"
           role="main"
         >
-          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-            {/* Page Transition */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
               >
                 <Outlet />
               </motion.div>
             </AnimatePresence>
           </div>
-        </motion.main>
-      </div>
 
-      {/* Footer */}
-      <footer className="bg-card dark:bg-card-dark border-t border-border dark:border-border-dark mt-auto">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted dark:text-muted-dark">
-              © 2026 REVA University. SLM & RAG Workshop.
-            </p>
-            <div className="flex gap-6 text-sm">
-              <a 
-                href="#" 
-                className="text-muted dark:text-muted-dark hover:text-primary dark:hover:text-primary-light transition-colors"
-              >
-                About
-              </a>
-              <a 
-                href="#" 
-                className="text-muted dark:text-muted-dark hover:text-primary dark:hover:text-primary-light transition-colors"
-              >
-                Documentation
-              </a>
-              <a 
-                href="#" 
-                className="text-muted dark:text-muted-dark hover:text-primary dark:hover:text-primary-light transition-colors"
-              >
-                Feedback
-              </a>
+          {/* Footer */}
+          <footer className="bg-card dark:bg-card-dark border-t border-border dark:border-border-dark mt-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <p className="text-sm text-muted dark:text-muted-dark">
+                  © 2026 REVA University — SLM &amp; RAG Workshop
+                </p>
+                <div className="flex gap-5 text-sm">
+                  {['About', 'Documentation', 'Feedback'].map(link => (
+                    <a
+                      key={link}
+                      href="#"
+                      className="text-muted dark:text-muted-dark hover:text-primary dark:hover:text-primary-light transition-colors"
+                    >
+                      {link}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </footer>
+          </footer>
+        </main>
+      </div>
     </div>
   )
 }
