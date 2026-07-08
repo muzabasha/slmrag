@@ -17,7 +17,7 @@ export default function Home() {
         <title>{courseData.title} - SLM & RAG Workshop</title>
         <meta name="description" content={courseData.subtitle} />
       </Helmet>
-      <div className="w-full space-y-8 lg:space-y-12 pb-16">
+      <div className="w-full max-w-full space-y-8 lg:space-y-12 pb-16 overflow-x-hidden">
         {/* ===== HERO SECTION ===== */}
         <section className="relative w-full overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black p-6 sm:p-8 lg:p-12">
         <div className="absolute inset-0 opacity-20">
@@ -104,11 +104,11 @@ export default function Home() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {courseData.prerequisites.map((pr, i) => (
-              <div key={i} className="flex items-start gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+              <div key={i} className="flex items-start gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/50 min-w-0">
                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                 </div>
-                <span className="text-xs text-gray-700 dark:text-gray-300">{pr}</span>
+                <span className="text-xs text-gray-700 dark:text-gray-300 break-words">{pr}</span>
               </div>
             ))}
           </div>
@@ -183,8 +183,8 @@ export default function Home() {
                 key={i}
                 className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
               >
-                <div className="w-20 sm:w-24 flex-shrink-0">
-                  <span className="text-xs font-semibold text-primary">{sched.time}</span>
+                <div className="w-24 sm:w-28 flex-shrink-0">
+                  <span className="text-[11px] sm:text-xs font-semibold text-primary whitespace-nowrap">{sched.time}</span>
                 </div>
                 <div className="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-600 flex-shrink-0" />
                 <span className="text-xs text-gray-700 dark:text-gray-300">{sched.activity}</span>

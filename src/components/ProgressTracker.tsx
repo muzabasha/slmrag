@@ -43,7 +43,7 @@ export default function ProgressTracker() {
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl p-5 mb-8 border border-primary/20 bg-gradient-to-br from-primary/8 via-secondary/5 to-transparent dark:from-primary/15 dark:via-secondary/10"
+      className="rounded-2xl p-5 border border-primary/20 bg-gradient-to-br from-primary/8 via-secondary/5 to-transparent dark:from-primary/15 dark:via-secondary/10"
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
