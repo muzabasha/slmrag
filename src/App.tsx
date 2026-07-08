@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import { ThemeContext, useThemeState } from './hooks/useTheme'
 import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import ModuleView from './pages/ModuleView'
@@ -12,21 +13,25 @@ import QuestionBankView from './pages/QuestionBankView'
 import InsightsView from './pages/InsightsView'
 
 function App() {
+  const theme = useThemeState()
+
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/overview" element={<SubjectOverview />} />
-        <Route path="/module/:moduleId" element={<ModuleView />} />
-        <Route path="/module/:moduleId/topic/:topicId" element={<TopicView />} />
-        <Route path="/analytics" element={<LearningAnalytics />} />
-        <Route path="/feedback" element={<FeedbackInterface />} />
-        <Route path="/dependency-graph" element={<DependencyGraph />} />
-        <Route path="/prerequisites" element={<PrerequisiteMapping />} />
-        <Route path="/question-bank" element={<QuestionBankView />} />
-        <Route path="/insights" element={<InsightsView />} />
-      </Route>
-    </Routes>
+    <ThemeContext.Provider value={theme}>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/overview" element={<SubjectOverview />} />
+          <Route path="/module/:moduleId" element={<ModuleView />} />
+          <Route path="/module/:moduleId/topic/:topicId" element={<TopicView />} />
+          <Route path="/analytics" element={<LearningAnalytics />} />
+          <Route path="/feedback" element={<FeedbackInterface />} />
+          <Route path="/dependency-graph" element={<DependencyGraph />} />
+          <Route path="/prerequisites" element={<PrerequisiteMapping />} />
+          <Route path="/question-bank" element={<QuestionBankView />} />
+          <Route path="/insights" element={<InsightsView />} />
+        </Route>
+      </Routes>
+    </ThemeContext.Provider>
   )
 }
 

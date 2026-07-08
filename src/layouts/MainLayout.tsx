@@ -6,91 +6,55 @@ import Header from '../components/Header'
 
 export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme')
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      return stored === 'dark' || (stored === null && prefersDark)
-    }
-    return false
-  })
-
   const location = useLocation()
 
-  // Close sidebar on route change (mobile)
   useEffect(() => {
     setSidebarOpen(false)
   }, [location.pathname])
 
-  // Initialize theme on mount
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [darkMode])
-
-  const toggleDarkMode = () => {
-    setDarkMode(prev => {
-      const next = !prev
-      localStorage.setItem('theme', next ? 'dark' : 'light')
-      if (next) {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
-      return next
-    })
-  }
+  const toggleSidebar = () => setSidebarOpen(prev => !prev)
 
   return (
-    <div className={`min-h-screen bg-surface dark:bg-surface-dark flex flex-col ${darkMode ? 'dark' : ''}`}>
-      {/* Skip to content link for accessibility */}
-      <a href="#main-content" className="skip-to-content">
-        Skip to main content
-      </a>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <Header toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
-      {/* Header */}
-      <Header
-        toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-        darkMode={darkMode}
-        toggleDarkMode={toggleDarkMode}
-      />
+      <div className="flex relative">
+        {/* Desktop Sidebar (always visible on lg+) */}
+        <aside
+          className="hidden lg:flex lg:flex-col lg:w-72 lg:fixed lg:inset-y-0 lg:z-30 lg:pt-20 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950"
+          role="complementary"
+          aria-label="Sidebar navigation"
+        >
+          <div className="flex-1 overflow-y-auto">
+            <Sidebar onClose={() => setSidebarOpen(false)} />
+          </div>
+        </aside>
 
-      {/* Layout Container */}
-      <div className="flex flex-1 relative min-h-0">
-
-        {/* Sidebar — always an overlay, never pushes content */}
+        {/* Mobile Sidebar Overlay */}
         <AnimatePresence>
           {sidebarOpen && (
             <>
-              {/* Mobile/Desktop Overlay backdrop */}
               <motion.div
+                key="backdrop"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+                className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
                 onClick={() => setSidebarOpen(false)}
                 aria-hidden="true"
               />
-
-              {/* Sidebar Panel */}
               <motion.aside
+                key="sidebar"
                 initial={{ x: -320, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -320, opacity: 0 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 320,
-                  damping: 32,
-                }}
-                className="fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-72 bg-card/90 dark:bg-card-dark/90 glass border-r border-border/50 dark:border-border-dark/50 shadow-2xl overflow-hidden"
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                className="fixed left-0 top-16 bottom-0 z-50 w-80 shadow-2xl overflow-hidden lg:hidden"
                 role="complementary"
                 aria-label="Sidebar navigation"
               >
-                <div className="h-full overflow-y-auto">
+                <div className="h-full overflow-y-auto bg-white dark:bg-gray-950">
                   <Sidebar onClose={() => setSidebarOpen(false)} />
                 </div>
               </motion.aside>
@@ -98,48 +62,39 @@ export default function MainLayout() {
           )}
         </AnimatePresence>
 
-        {/* Main Content — never shifts, always full width under the overlay */}
-        <main
-          id="main-content"
-          className="flex-1 min-h-0 overflow-y-auto"
-          role="main"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={location.pathname}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-              >
-                <Outlet />
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        {/* Main Content */}
+        <div className="flex-1 min-h-[calc(100vh-4rem)] lg:ml-72">
+          <motion.main
+            key={location.pathname}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8"
+          >
+            <Outlet />
+          </motion.main>
 
-          {/* Footer */}
-          <footer className="bg-card dark:bg-card-dark border-t border-border dark:border-border-dark mt-auto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-                <p className="text-sm text-muted dark:text-muted-dark">
-                  © 2026 REVA University — SLM &amp; RAG Workshop
+          <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  &copy; 2026 REVA University. SLM & RAG Workshop.
                 </p>
-                <div className="flex gap-5 text-sm">
-                  {['About', 'Documentation', 'Feedback'].map(link => (
-                    <a
-                      key={link}
-                      href="#"
-                      className="text-muted dark:text-muted-dark hover:text-primary dark:hover:text-primary-light transition-colors"
-                    >
-                      {link}
-                    </a>
-                  ))}
+                <div className="flex gap-8 text-sm">
+                  <a href="https://github.com/muzabasha/slmrag" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    GitHub
+                  </a>
+                  <span className="text-gray-300 dark:text-gray-600">|</span>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    Built with React + TypeScript
+                  </span>
                 </div>
               </div>
             </div>
           </footer>
-        </main>
+        </div>
       </div>
     </div>
   )

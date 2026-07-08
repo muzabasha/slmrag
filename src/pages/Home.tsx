@@ -1,62 +1,53 @@
-import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import { motion } from 'framer-motion'
 import {
-  ArrowRight, BookOpen, Brain, Code, Users, Target,
-  Calendar, Award, ExternalLink, Sparkles
+  ArrowRight, Clock, BookOpen, Code2, Layers, Trophy,
+  GraduationCap, ExternalLink, Sparkles, CheckCircle,
+  Calendar, Users, Zap, Target, ChevronRight
 } from 'lucide-react'
-import courseData from '../data/courseData'
-import { dailySchedule, miniProjects } from '../data/courseData'
+import courseData, { dailySchedule, miniProjects } from '../data/courseData'
 import ProgressTracker from '../components/ProgressTracker'
 
-const totalTopics = courseData.modules.reduce((a, m) => a + m.topics.length, 0)
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+}
 
 export default function Home() {
-  return (
-    <>
-      <Helmet><title>SLM &amp; RAG Workshop - Home</title></Helmet>
+  const totalTopics = courseData.modules.reduce((sum, m) => sum + m.topics.length, 0)
 
-      {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-dark to-secondary p-8 md:p-12 mb-8 shadow-2xl"
-      >
-        {/* Animated background blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-8 -left-8 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-secondary/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }} />
+  return (
+    <div className="space-y-16 lg:space-y-24 pb-16">
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black p-8 lg:p-12 xl:p-16">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary/30 blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-secondary/30 blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 rounded-full bg-accent/20 blur-3xl" />
         </div>
 
-        <div className="relative z-10">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, type: 'spring' }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full text-white mb-5 backdrop-blur-sm border border-white/30"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-semibold">Interactive Learning Experience</span>
-          </motion.div>
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+            <span className="text-xs font-medium text-white/80">Interactive Learning Experience</span>
+          </div>
 
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight tracking-tight mb-4">
             {courseData.title}
           </h1>
-          <p className="text-xl text-white/90 mb-3 max-w-3xl leading-relaxed">
+          <p className="text-lg sm:text-xl text-white/70 max-w-2xl mb-4">
             {courseData.subtitle}
           </p>
-          <p className="text-base text-white/75 mb-8 flex items-center gap-2">
-            <Target className="w-4 h-4 flex-shrink-0" />
+          <p className="text-sm text-white/50 mb-8">
+            <Users className="w-4 h-4 inline mr-1" />
             {courseData.audience}
           </p>
 
           <div className="flex flex-wrap gap-3">
             <Link
-              to="/overview"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-white/90 hover:scale-105 transition-all text-base shadow-lg"
+              to="/module/day1"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-semibold hover:bg-primary-dark transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5"
             >
-              <BookOpen className="w-5 h-5" />
               Start Learning
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -64,200 +55,222 @@ export default function Home() {
               href="https://scholar-sparkle-web.lovable.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 text-white font-semibold rounded-xl hover:bg-white/25 hover:scale-105 transition-all text-base border border-white/30 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 transition-all border border-white/10"
             >
-              <Users className="w-5 h-5" />
-              Resource Person
               <ExternalLink className="w-4 h-4" />
+              Resource Person
             </a>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Progress Tracker */}
-      <ProgressTracker />
+      {/* ===== PROGRESS TRACKER ===== */}
+      <motion.div {...fadeUp} transition={{ delay: 0.1 }}>
+        <ProgressTracker />
+      </motion.div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      {/* ===== STATS GRID ===== */}
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={{
+          animate: { transition: { staggerChildren: 0.08 } },
+        }}
+        className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+      >
         {[
-          { icon: Calendar, label: 'Duration', value: '6 Days' },
-          { icon: BookOpen, label: 'Modules', value: `${courseData.modules.length} Modules` },
-          { icon: Brain, label: 'Topics', value: `${totalTopics} Topics` },
-          { icon: Award, label: 'Projects', value: '6 Projects' },
-        ].map((stat, i) => {
-          const Icon = stat.icon
-          return (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              className="bg-card dark:bg-card-dark rounded-2xl p-5 border border-border dark:border-border-dark text-center hover-lift"
-            >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto mb-3">
-                <Icon className="w-5 h-5 text-primary" />
+          { icon: Calendar, label: 'Duration', value: '6 Days', color: 'from-blue-500 to-blue-600' },
+          { icon: BookOpen, label: 'Modules', value: `${courseData.modules.length} Modules`, color: 'from-purple-500 to-purple-600' },
+          { icon: Layers, label: 'Topics', value: `${totalTopics} Topics`, color: 'from-emerald-500 to-emerald-600' },
+          { icon: Trophy, label: 'Projects', value: `${miniProjects.length} Projects`, color: 'from-amber-500 to-amber-600' },
+        ].map(({ icon: Icon, label, value, color }) => (
+          <motion.div
+            key={label}
+            variants={fadeUp}
+            className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full bg-gradient-to-br ${color} opacity-10 group-hover:opacity-20 transition-opacity`} />
+            <div className="relative">
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-lg mb-3`}>
+                <Icon className="w-5 h-5 text-white" />
               </div>
-              <div className="text-2xl font-bold text-text dark:text-text-dark">{stat.value}</div>
-              <div className="text-xs text-muted dark:text-muted-dark mt-0.5">{stat.label}</div>
-            </motion.div>
-          )
-        })}
-      </div>
-
-      {/* Prerequisites */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="bg-card dark:bg-card-dark rounded-2xl p-6 border border-border dark:border-border-dark mb-8"
-      >
-        <h2 className="text-xl font-bold text-text dark:text-text-dark mb-4 flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Code className="w-4 h-4 text-primary" />
-          </div>
-          Prerequisites
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-2.5">
-          {courseData.prerequisites.map((prereq, i) => (
-            <div key={i} className="flex items-start gap-2.5 text-sm text-text dark:text-text-dark">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />
-              <span>{prereq}</span>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
             </div>
-          ))}
-        </div>
-      </motion.section>
+          </motion.div>
+        ))}
+      </motion.div>
 
-      {/* Modules Grid */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="mb-8"
-      >
-        <h2 className="text-2xl font-bold text-text dark:text-text-dark mb-6">Workshop Modules</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {courseData.modules.map((module, i) => (
+      {/* ===== PREREQUISITES ===== */}
+      <motion.div {...fadeUp} transition={{ delay: 0.3 }}>
+        <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 lg:p-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-primary" />
+            Prerequisites
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {courseData.prerequisites.map((pr, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-primary" />
+                </div>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{pr}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ===== MODULE CARDS ===== */}
+      <section>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Workshop Modules</h2>
+          <Link to="/overview" className="text-sm text-primary hover:text-primary-dark flex items-center gap-1 transition-colors">
+            View all <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {courseData.modules.map((mod, i) => (
             <motion.div
-              key={module.id}
+              key={mod.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className="flex"
+              transition={{ delay: 0.1 + i * 0.06 }}
             >
               <Link
-                to={`/module/${module.id}`}
-                className="flex flex-col w-full bg-card dark:bg-card-dark rounded-2xl p-5 border border-border dark:border-border-dark hover:border-primary/40 hover:shadow-xl transition-all group"
+                to={`/module/${mod.id}`}
+                className="group block relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full"
               >
-                {/* Card header */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
-                    <span className="text-white font-bold text-base">D{module.day}</span>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
+                    <span className="text-white font-bold text-sm">{mod.day}</span>
                   </div>
-                  <div>
-                    <span className="text-xs font-bold text-primary uppercase tracking-widest block">Day {module.day}</span>
-                    <span className="text-xs text-muted dark:text-muted-dark">{module.topics.length} topic{module.topics.length !== 1 ? 's' : ''}</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {mod.skills.slice(0, 2).map(s => (
+                      <span key={s} className="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300">
+                        {s}
+                      </span>
+                    ))}
                   </div>
                 </div>
-
-                <h3 className="text-base font-bold text-text dark:text-text-dark mb-1.5 group-hover:text-primary transition-colors leading-snug">
-                  {module.title}
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1.5 group-hover:text-primary transition-colors">
+                  {mod.title}
                 </h3>
-                <p className="text-sm text-muted dark:text-muted-dark mb-4 leading-relaxed flex-1">
-                  {module.subtitle}
+                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">
+                  {mod.subtitle}
                 </p>
-
-                {/* Objectives */}
-                <div className="space-y-1.5 mb-4">
-                  {module.objectives.slice(0, 2).map((obj, j) => (
-                    <p key={j} className="text-xs text-muted dark:text-muted-dark flex items-start gap-1.5">
-                      <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0 text-primary" />
-                      {obj}
-                    </p>
-                  ))}
+                <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <Layers className="w-3.5 h-3.5" />
+                    {mod.topics.length} topics
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Code2 className="w-3.5 h-3.5" />
+                    {mod.tools.length} tools
+                  </span>
                 </div>
-
-                {/* Deliverable badge */}
-                <div className="pt-3 border-t border-border dark:border-border-dark">
-                  <span className="text-xs font-semibold text-secondary line-clamp-1">{module.deliverable}</span>
+                <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                  <span className="text-xs font-medium text-primary group-hover:underline underline-offset-2">
+                    Explore Module
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
             </motion.div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      {/* Daily Schedule */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="bg-card dark:bg-card-dark rounded-2xl p-6 border border-border dark:border-border-dark mb-8"
-      >
-        <h2 className="text-xl font-bold text-text dark:text-text-dark mb-4">Daily Schedule</h2>
-        <div className="overflow-x-auto -mx-2">
-          <table className="w-full text-left min-w-[360px]">
-            <thead>
-              <tr className="border-b border-border dark:border-border-dark">
-                <th className="py-2.5 px-4 text-xs font-semibold text-muted dark:text-muted-dark uppercase tracking-wider w-36">Time</th>
-                <th className="py-2.5 px-4 text-xs font-semibold text-muted dark:text-muted-dark uppercase tracking-wider">Activity</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dailySchedule.map((item, i) => (
-                <tr key={i} className="border-b border-border dark:border-border-dark last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
-                  <td className="py-3 px-4 text-sm text-primary font-medium whitespace-nowrap">{item.time}</td>
-                  <td className="py-3 px-4 text-sm text-text dark:text-text-dark">{item.activity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* ===== DAILY SCHEDULE ===== */}
+      <motion.div {...fadeUp} transition={{ delay: 0.5 }}>
+        <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 lg:p-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-primary" />
+            Daily Schedule
+          </h2>
+          <div className="space-y-2">
+            {dailySchedule.map((sched, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+              >
+                <div className="w-24 flex-shrink-0">
+                  <span className="text-sm font-semibold text-primary">{sched.time}</span>
+                </div>
+                <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700 dark:text-gray-300">{sched.activity}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </motion.section>
+      </motion.div>
 
-      {/* Mini Projects */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="bg-card dark:bg-card-dark rounded-2xl p-6 border border-border dark:border-border-dark mb-8"
-      >
-        <h2 className="text-xl font-bold text-text dark:text-text-dark mb-5">Progressive Mini Projects</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {miniProjects.map((proj, i) => (
-            <div
-              key={i}
-              className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-border dark:border-border-dark hover:border-primary/30 transition-colors"
-            >
-              <div className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Day {proj.day}</div>
-              <div className="font-semibold text-text dark:text-text-dark mb-1.5 text-sm leading-snug">{proj.project}</div>
-              <div className="text-xs text-muted dark:text-muted-dark">{proj.skills}</div>
-            </div>
-          ))}
+      {/* ===== MINI PROJECTS ===== */}
+      <motion.div {...fadeUp} transition={{ delay: 0.6 }}>
+        <div className="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 lg:p-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <Zap className="w-5 h-5 text-amber-500" />
+            Progressive Mini Projects
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {miniProjects.map((mp, i) => (
+              <div
+                key={i}
+                className="p-4 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/30 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-amber-600 dark:text-amber-400">D{mp.day}</span>
+                  </div>
+                  <span className="text-xs font-medium text-amber-600 dark:text-amber-400">Project {mp.day}</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1.5">{mp.project}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{mp.skills}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </motion.section>
+      </motion.div>
 
-      {/* Learning Objectives */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="bg-card dark:bg-card-dark rounded-2xl p-6 border border-border dark:border-border-dark"
-      >
-        <h2 className="text-xl font-bold text-text dark:text-text-dark mb-5">
-          By the end of this workshop, you will be able to:
-        </h2>
-        <ol className="space-y-3">
-          {courseData.overallObjectives.map((obj, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm text-text dark:text-text-dark">
-              <span className="w-7 h-7 rounded-full bg-gradient-to-br from-primary/15 to-secondary/15 text-primary flex items-center justify-center flex-shrink-0 font-bold text-xs border border-primary/20">
-                {i + 1}
-              </span>
-              <span className="pt-0.5 leading-relaxed">{obj}</span>
-            </li>
-          ))}
-        </ol>
-      </motion.section>
-    </>
+      {/* ===== LEARNING OBJECTIVES ===== */}
+      <motion.div {...fadeUp} transition={{ delay: 0.7 }}>
+        <div className="rounded-2xl bg-gradient-to-br from-primary/5 via-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10 border border-primary/10 dark:border-primary/20 p-6 lg:p-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+            <Target className="w-5 h-5 text-primary" />
+            Learning Objectives
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {courseData.overallObjectives.map((obj, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <span className="text-white text-xs font-bold">{i + 1}</span>
+                </div>
+                <span className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{obj}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ===== CTA ===== */}
+      <motion.div {...fadeUp} transition={{ delay: 0.8 }}>
+        <div className="text-center p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-primary to-secondary">
+          <GraduationCap className="w-12 h-12 text-white/80 mx-auto mb-4" />
+          <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">
+            Ready to Start Your Journey?
+          </h2>
+          <p className="text-white/70 mb-6 max-w-md mx-auto">
+            Dive into the world of Small Language Models and build production-ready RAG systems.
+          </p>
+          <Link
+            to="/module/day1"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-white text-primary font-bold hover:bg-white/90 transition-all shadow-xl hover:-translate-y-0.5"
+          >
+            Begin with Day 1
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </motion.div>
+    </div>
   )
 }
