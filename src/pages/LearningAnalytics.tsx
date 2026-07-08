@@ -18,7 +18,7 @@ const topicDistribution = [
   { name: 'Projects', value: 25 },
 ]
 
-const COLORS = ['#3b82f6', '#10b981', '#7c3aed']
+const COLORS = ['#4f46e5', '#10b981', '#ec4899']
 
 const skillData = [
   { skill: 'LLM Architecture', score: 85 },
@@ -33,10 +33,15 @@ export default function LearningAnalytics() {
     <>
       <Helmet><title>Learning Analytics - SLM & RAG Workshop</title></Helmet>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold text-text dark:text-text-dark mb-6 flex items-center gap-2">
-          <BarChart3 className="w-8 h-8 text-primary" />
-          Learning Analytics Dashboard
-        </h1>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
+            <BarChart3 className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-text dark:text-text-dark">Learning Analytics Dashboard</h1>
+            <p className="text-sm text-muted dark:text-muted-dark">Track your progress across all 6 days</p>
+          </div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-6">
           {/* Progress Chart */}
