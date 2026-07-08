@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { 
   Beaker, Play, Pause, RotateCcw, Zap, 
   CheckCircle, Code, Terminal, Package,
-  FileCode, Rocket, Activity, Book
+  FileCode, Rocket, Activity, Book, Lightbulb
 } from 'lucide-react'
 import CodeEditor from './CodeEditor'
 import { slmFineTuningSteps, ragAdvancedSteps } from '../data/labStepsAdvanced'
@@ -615,9 +615,10 @@ export default function EnhancedVirtualLab({ title, description, topic }: Props)
               />
               {currentStep.code.explanation && (
                 <div className="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
-                  <p className="text-sm text-text dark:text-text-dark">
-                    <strong className="text-blue-700 dark:text-blue-300">💡 Explanation:</strong> {currentStep.code.explanation}
-                  </p>
+                      <div className="flex items-start gap-2 text-sm text-text dark:text-text-dark">
+                        <Lightbulb className="w-4 h-4 text-blue-600 dark:text-blue-300 mt-0.5 flex-shrink-0" />
+                        <div><strong className="text-blue-700 dark:text-blue-300">Explanation:</strong> {currentStep.code.explanation}</div>
+                      </div>
                 </div>
               )}
             </div>
@@ -657,9 +658,10 @@ export default function EnhancedVirtualLab({ title, description, topic }: Props)
               <div className="space-y-3">
                 {currentStep.troubleshooting.map((item, i) => (
                   <div key={i} className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-700">
-                    <p className="font-semibold text-yellow-800 dark:text-yellow-300 mb-1">
-                      ⚠️ {item.issue}
-                    </p>
+                    <div className="flex items-center gap-1.5 font-semibold text-yellow-800 dark:text-yellow-300 mb-1">
+                      <Zap className="w-4 h-4" />
+                      <span>{item.issue}</span>
+                    </div>
                     <p className="text-sm text-text dark:text-text-dark">
                       <strong>Solution:</strong> {item.solution}
                     </p>

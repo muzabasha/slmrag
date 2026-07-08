@@ -5,7 +5,7 @@ import {
   BookMarked, FlaskConical, MessageSquare, AlertTriangle,
   CheckCircle, Target, ChevronDown, ChevronUp, List
 } from 'lucide-react'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import courseData from '../data/courseData'
 import ActivitySection from '../components/ActivitySection'
 import ProjectSection from '../components/ProjectSection'
@@ -30,6 +30,20 @@ export default function TopicView() {
   const { moduleId, topicId } = useParams()
   const module = courseData.modules.find(m => m.id === moduleId)
   const topic = module?.topics.find(t => t.id === topicId)
+
+  // Track topic visit for progress
+  useEffect(() => {
+    if (topicId) {
+      try {
+        const saved = localStorage.getItem('courseProgress')
+        const data = saved ? JSON.parse(saved) : {}
+        if (!data[topicId]) {
+          data[topicId] = { completed: true, lastVisited: new Date().toISOString() }
+          localStorage.setItem('courseProgress', JSON.stringify(data))
+        }
+      } catch { /* ignore */ }
+    }
+  }, [topicId])
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     prerequisites: true, story: true, math: true, activities: true,

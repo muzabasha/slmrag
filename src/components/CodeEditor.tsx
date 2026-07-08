@@ -105,7 +105,9 @@ export default function CodeEditor({ initialCode, language, expectedOutput, hint
           animate={{ height: 'auto', opacity: 1 }}
           className="bg-yellow-900/20 border-b border-yellow-700 p-3"
         >
-          <div className="text-sm text-yellow-300 font-semibold mb-2">💡 Hints:</div>
+          <div className="flex items-center gap-1.5 text-sm text-yellow-300 font-semibold mb-2">
+            <Lightbulb className="w-4 h-4" /> Hints:
+          </div>
           <ul className="space-y-1">
             {hints.map((hint, i) => (
               <li key={i} className="text-xs text-yellow-200 flex items-start gap-2">

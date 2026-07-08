@@ -1,7 +1,8 @@
-import { Link, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { Menu, GraduationCap, Sun, Moon, Search, X } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react'
+import { Menu, GraduationCap, Sun, Moon, Search, X, ArrowRight } from 'lucide-react'
 import { useTheme } from '../hooks/useTheme'
+import courseData from '../data/courseData'
 
 interface HeaderProps {
   toggleSidebar: () => void
@@ -11,9 +12,28 @@ interface HeaderProps {
 export default function Header({ toggleSidebar, sidebarOpen }: HeaderProps) {
   const { darkMode, toggleDarkMode } = useTheme()
   const location = useLocation()
+  const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return []
+    const q = searchQuery.toLowerCase()
+    const results: { label: string; to: string; module: string }[] = []
+    for (const mod of courseData.modules) {
+      if (mod.title.toLowerCase().includes(q)) {
+        results.push({ label: `Day ${mod.day}: ${mod.title}`, to: `/module/${mod.id}`, module: '' })
+      }
+      for (const topic of mod.topics) {
+        if (topic.title.toLowerCase().includes(q) || topic.description.toLowerCase().includes(q)) {
+          results.push({ label: topic.title, to: `/module/${mod.id}/topic/${topic.id}`, module: `Day ${mod.day}` })
+        }
+      }
+    }
+    return results.slice(0, 10)
+  }, [searchQuery])
 
   useEffect(() => {
     const onScroll = () => {
@@ -120,17 +140,58 @@ export default function Header({ toggleSidebar, sidebarOpen }: HeaderProps) {
               <Search className="w-5 h-5 text-gray-400" />
               <input
                 autoFocus
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-400 text-base"
                 placeholder="Search topics, modules, concepts..."
-                onKeyDown={(e) => e.key === 'Escape' && setSearchOpen(false)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') setSearchOpen(false)
+                  if (e.key === 'Enter' && searchResults.length > 0) {
+                    navigate(searchResults[0].to)
+                    setSearchOpen(false)
+                    setSearchQuery('')
+                  }
+                }}
               />
               <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-md font-mono">
                 ESC
               </kbd>
             </div>
-            <div className="p-8 text-center text-gray-400 dark:text-gray-500 text-sm">
-              Type to search across all workshop content...
-            </div>
+            {searchQuery.trim() ? (
+              <div className="max-h-80 overflow-y-auto p-2">
+                {searchResults.length === 0 ? (
+                  <div className="p-6 text-center text-gray-400 dark:text-gray-500 text-sm">
+                    No results found for &ldquo;{searchQuery}&rdquo;
+                  </div>
+                ) : (
+                  searchResults.map((result, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        navigate(result.to)
+                        setSearchOpen(false)
+                        setSearchQuery('')
+                      }}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left group"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                          {result.label}
+                        </p>
+                        {result.module && (
+                          <p className="text-xs text-gray-400 dark:text-gray-500">{result.module}</p>
+                        )}
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                    </button>
+                  ))
+                )}
+              </div>
+            ) : (
+              <div className="p-8 text-center text-gray-400 dark:text-gray-500 text-sm">
+                Type to search across all workshop content...
+              </div>
+            )}
           </div>
         </div>
       )}

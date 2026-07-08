@@ -11,6 +11,7 @@ import DependencyGraph from './pages/DependencyGraph'
 import PrerequisiteMapping from './pages/PrerequisiteMapping'
 import QuestionBankView from './pages/QuestionBankView'
 import InsightsView from './pages/InsightsView'
+import NotFound from './pages/NotFound'
 
 function App() {
   const theme = useThemeState()
@@ -29,6 +30,7 @@ function App() {
           <Route path="/prerequisites" element={<PrerequisiteMapping />} />
           <Route path="/question-bank" element={<QuestionBankView />} />
           <Route path="/insights" element={<InsightsView />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </ThemeContext.Provider>

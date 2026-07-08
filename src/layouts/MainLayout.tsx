@@ -15,7 +15,7 @@ export default function MainLayout() {
   const toggleSidebar = () => setSidebarOpen(prev => !prev)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       <Header toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
       <div className="flex relative">
@@ -63,7 +63,7 @@ export default function MainLayout() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <div className="flex-1 min-h-[calc(100vh-4rem)] lg:ml-72">
+        <div className="flex-1 min-h-[calc(100vh-4rem)] lg:ml-72 min-w-0">
           <motion.main
             key={location.pathname}
             initial={{ opacity: 0, y: 12 }}
