@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { ThemeContext, useThemeState } from './hooks/useTheme'
+import { useCacheControl } from './hooks/useCacheControl'
 import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import ModuleView from './pages/ModuleView'
@@ -15,6 +16,9 @@ import NotFound from './pages/NotFound'
 
 function App() {
   const theme = useThemeState()
+  
+  // Enable cache control and cookie management
+  useCacheControl()
 
   return (
     <ThemeContext.Provider value={theme}>
